@@ -87,6 +87,7 @@ function Device() {
 
   return (
     <div>
+      <div className="header-padding"></div>
       <FormControl className={classes.formControl}>
         <InputLabel id="demo-simple-select-label">Device Type: </InputLabel>
         <Select
