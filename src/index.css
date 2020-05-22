@@ -28,3 +28,8 @@ code {
   align-items: center;
   justify-content: center;
 }
+
+.date-selector-padding {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
