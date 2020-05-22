@@ -62,29 +62,11 @@ const BlueCheckbox = withStyles({
   checked: {},
 })((props) => <Checkbox color="default" {...props} />);
 
-function saveDeviceConfig(data) {
-  CodeForACauseService.saveDeviceConfig(data)
-    .then(response => {
-      this.setState({
-        id: response.data.id,
-        title: response.data.title,
-        description: response.data.description,
-        published: response.data.published,
-
-        submitted: true
-      });
-      console.log(response.data);
-    })
-    .catch(e => {
-      console.log(e);
-    });
-};
-
 function Device() {
 
   const classes = useStyles();
-  const [deviceType, setDeviceType] = React.useState('');
-  const [configRValue, setConfigRValue] = React.useState('');
+  let [deviceType, setDeviceType] = React.useState('');
+  let [configRValue, setConfigRValue] = React.useState('');
   const [configBValue, setConfigBValue] = React.useState('');
   const [configYValue, setConfigYValue] = React.useState('');
   const [configGValue, setConfigGValue] = React.useState('');
@@ -140,8 +122,16 @@ function Device() {
         'RED' : configRValue
       }
     };
-    //saveDeviceConfig(data);
+    CodeForACauseService.saveDeviceConfig(data)
+    .then(response => {
+      console.log(response.data);
+    })
+    .catch(e => {
+      console.log(e);
+    });
   };
+
+  deviceType = 'logicAppSimulator';
 
   return (
     <div style={{ width: '100%' }}>
@@ -163,9 +153,11 @@ function Device() {
           id="simple-select-device"
           value={deviceId}
           onChange={handleDeviceIdChange}>
-          <MenuItem value={1234}>1234</MenuItem>
-          <MenuItem value={3434}>3434</MenuItem>
-          <MenuItem value={9990}>9990</MenuItem>
+          <MenuItem value='device_id_1'>device_id_1</MenuItem>
+          <MenuItem value='device_id_2'>device_id_2</MenuItem>
+          <MenuItem value='device_id_3'>device_id_3</MenuItem>
+          <MenuItem value='device_id_4'>device_id_4</MenuItem>
+          <MenuItem value='device_id_5'>device_id_5</MenuItem>
         </Select>
       </FormControl>
       <FormControl className={classes.formControl}>
@@ -176,7 +168,7 @@ function Device() {
           value={therapistId}
           onChange={handleTherapistIdChange}
         >
-          <MenuItem value="Therapist 1">Krishna Golla</MenuItem>
+          <MenuItem value="Krishna Golla">Krishna Golla</MenuItem>
         </Select>
       </FormControl>
       <FormControl className={classes.formControl}>
