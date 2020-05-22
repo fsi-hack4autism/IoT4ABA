@@ -22,3 +22,9 @@ code {
 .calendar-padding {
   padding: 50px;
 }
+
+.modal-format {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
