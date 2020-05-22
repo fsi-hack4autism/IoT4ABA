@@ -9,6 +9,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
+import CodeForACauseService from '../services/CodeForACauseService';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -60,18 +61,41 @@ const BlueCheckbox = withStyles({
   checked: {},
 })((props) => <Checkbox color="default" {...props} />);
 
+function saveDeviceConfig(data) {
+  CodeForACauseService.saveDeviceConfig(data)
+    .then(response => {
+      this.setState({
+        id: response.data.id,
+        title: response.data.title,
+        description: response.data.description,
+        published: response.data.published,
+
+        submitted: true
+      });
+      console.log(response.data);
+    })
+    .catch(e => {
+      console.log(e);
+    });
+};
+
 function Device() {
 
   const classes = useStyles();
-  const [deviceType, setAge, deviceId] = React.useState('');
+  const [deviceType, setDeviceType] = React.useState('');
+  const [deviceId, setDeviceId] = React.useState('');
+  const [therapistId, setTherapistId] = React.useState('');
 
   const handleDeivceTypeChange = (event) => {
-    console.log(event.target.value);
-    setAge(event.target.value);
+    setDeviceType(event.target.value);
   };
 
-  const handleDeivceIdChange = (event) => {
-    console.log(event.target.value);
+  const handleTherapistIdChange = (event) => {
+    setTherapistId(event.target.value);
+  };
+
+  const handleDeviceIdChange = (event) => {
+    setDeviceId(event.target.value);
   };
 
   const [state, setState] = React.useState({
@@ -83,6 +107,14 @@ function Device() {
 
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.checked });
+  };
+
+  const saveDeviceConfig = (event) => {
+    var data = {
+      device_id: deviceId,
+      therapist_id: therapistId
+    };
+    //saveDeviceConfig(data);
   };
 
   return (
@@ -106,7 +138,7 @@ function Device() {
         <Select labelId="simple-select-device-label"
           id="simple-select-device"
           value={deviceId}
-          onChange={handleDeivceIdChange}>
+          onChange={handleDeviceIdChange}>
           <MenuItem value={1234}>1234</MenuItem>
           <MenuItem value={3434}>3434</MenuItem>
           <MenuItem value={9990}>9990</MenuItem>
@@ -117,8 +149,8 @@ function Device() {
         <Select
           labelId="demo-simple-therapist-label"
           id="simple-select-therapist"
-          value={deviceType}
-          onChange={handleDeivceTypeChange}
+          value={therapistId}
+          onChange={handleTherapistIdChange}
         >
           <MenuItem value="Therapist 1">Therapist 1</MenuItem>
           <MenuItem value="Therapist 2">Therapist 2</MenuItem>
@@ -143,7 +175,7 @@ function Device() {
           l
         />
       </FormGroup>
-      <Button variant="contained" color="primary">
+      <Button variant="contained" color="primary" onClick={saveDeviceConfig}>
         Save Configuration
       </Button>
     </div>
