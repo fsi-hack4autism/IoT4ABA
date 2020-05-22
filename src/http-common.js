@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export default axios.create({
-  baseURL: "http://localhost:8080/api",
+  baseURL: "https://iotaut2020.blob.core.windows.net/referencedata/",
   headers: {
     "Content-type": "application/json"
   }
