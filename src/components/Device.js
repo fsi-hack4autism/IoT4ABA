@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles , withStyles} from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { green, red, yellow, blue } from '@material-ui/core/colors';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -9,6 +9,8 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
+import CodeForACauseService from '../services/CodeForACauseService';
+import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -60,33 +62,89 @@ const BlueCheckbox = withStyles({
   checked: {},
 })((props) => <Checkbox color="default" {...props} />);
 
+function saveDeviceConfig(data) {
+  CodeForACauseService.saveDeviceConfig(data)
+    .then(response => {
+      this.setState({
+        id: response.data.id,
+        title: response.data.title,
+        description: response.data.description,
+        published: response.data.published,
+
+        submitted: true
+      });
+      console.log(response.data);
+    })
+    .catch(e => {
+      console.log(e);
+    });
+};
+
 function Device() {
 
   const classes = useStyles();
-  const [deviceType, setAge, deviceId] = React.useState('');
+  const [deviceType, setDeviceType] = React.useState('');
+  const [configRValue, setConfigRValue] = React.useState('');
+  const [configBValue, setConfigBValue] = React.useState('');
+  const [configYValue, setConfigYValue] = React.useState('');
+  const [configGValue, setConfigGValue] = React.useState('');
+  const [deviceId, setDeviceId] = React.useState('');
+  const [therapistId, setTherapistId] = React.useState('');
+  const [configName, setConfigName] = React.useState('');
+
+  const handleConfigRValueChange = (event) => {
+    setConfigRValue(event.target.value);
+  };
+  const handleConfigYValueChange = (event) => {
+    setConfigYValue(event.target.value);
+  };
+  const handleConfigBValueChange = (event) => {
+    setConfigBValue(event.target.value);
+  };
+  const handleConfigGValueChange = (event) => {
+    setConfigGValue(event.target.value);
+  };
 
   const handleDeivceTypeChange = (event) => {
-    console.log(event.target.value);
-    setAge(event.target.value);
+    setDeviceType(event.target.value);
   };
 
-  const handleDeivceIdChange = (event) => {
-    console.log(event.target.value);
+  const handleTherapistIdChange = (event) => {
+    setTherapistId(event.target.value);
   };
 
-  const [state, setState] = React.useState({
-    checkedR: false,
-    checkedG: false,
-    checkedB: false,
-    checkedY: false
+  const handleDeviceIdChange = (event) => {
+    setDeviceId(event.target.value);
+  };
+
+  const handleConfigNameChange = (event) => {
+    setConfigName(event.target.value);
+  };
+
+  const [state] = React.useState({
+    checkedR: true,
+    checkedG: true,
+    checkedB: true,
+    checkedY: true
   });
 
-  const handleChange = (event) => {
-    setState({ ...state, [event.target.name]: event.target.checked });
+  const saveDeviceConfig = (event) => {
+    var data = {
+      DeviceId: deviceId,
+      TherapistName: therapistId,
+      ConfigurationName: configName,
+      ConfigurationKVPair: {
+        'BLUE' : configBValue,
+        'GREEN' : configGValue,
+        'YELLOW' : configYValue,
+        'RED' : configRValue
+      }
+    };
+    //saveDeviceConfig(data);
   };
 
   return (
-    <div>
+    <div style={{ width: '100%' }}>
       <div className="header-padding"></div>
       <FormControl className={classes.formControl}>
         <InputLabel id="demo-simple-select-label">Device Type: </InputLabel>
@@ -96,9 +154,7 @@ function Device() {
           value={deviceType}
           onChange={handleDeivceTypeChange}
         >
-          <MenuItem value="Raspberry PI">Raspberry PI</MenuItem>
-          <MenuItem value="Ipad">Ipad</MenuItem>
-          <MenuItem value="Clicker">Clicker</MenuItem>
+          <MenuItem value="logicAppSimulator">logicAppSimulator</MenuItem>
         </Select>
       </FormControl>
       <FormControl className={classes.formControl}>
@@ -106,44 +162,47 @@ function Device() {
         <Select labelId="simple-select-device-label"
           id="simple-select-device"
           value={deviceId}
-          onChange={handleDeivceIdChange}>
+          onChange={handleDeviceIdChange}>
           <MenuItem value={1234}>1234</MenuItem>
           <MenuItem value={3434}>3434</MenuItem>
           <MenuItem value={9990}>9990</MenuItem>
         </Select>
       </FormControl>
       <FormControl className={classes.formControl}>
-        <InputLabel id="demo-simple-therapist-label">Therapist Id: </InputLabel>
+        <InputLabel id="demo-simple-therapist-label">Therapist: </InputLabel>
         <Select
           labelId="demo-simple-therapist-label"
           id="simple-select-therapist"
-          value={deviceType}
-          onChange={handleDeivceTypeChange}
+          value={therapistId}
+          onChange={handleTherapistIdChange}
         >
-          <MenuItem value="Therapist 1">Therapist 1</MenuItem>
-          <MenuItem value="Therapist 2">Therapist 2</MenuItem>
-          <MenuItem value="Therapist 3">Therapist 3</MenuItem>
+          <MenuItem value="Therapist 1">Krishna Golla</MenuItem>
         </Select>
       </FormControl>
+      <FormControl className={classes.formControl}>
+        <TextField required id="standard-required" label="Configuration Name" onChange={handleConfigNameChange}
+          defaultValue={configName} />
+      </FormControl>
       <FormGroup row>
-        <FormControlLabel
-          control={<GreenCheckbox checked={state.checkedG} onChange={handleChange} name="checkedG" />}
-          
+        <FormControlLabel disabled
+          control={<GreenCheckbox checked={state.checkedG} name="checkedG" />}
         />
-        <FormControlLabel
-          control={<RedCheckbox checked={state.checkedR} onChange={handleChange} name="checkedR" />}
-        
+        <TextField id="standard-required" label="Name" defaultValue={configGValue} onChange={handleConfigGValueChange}/>
+        <FormControlLabel disabled
+          control={<RedCheckbox checked={state.checkedR} name="checkedR" />}
         />
-        <FormControlLabel
-          control={<YellowCheckbox checked={state.checkedY} onChange={handleChange} name="checkedY" />}
-        
+        <TextField id="standard-required" label="Name" defaultValue={configRValue} onChange={handleConfigRValueChange}/>
+        <FormControlLabel disabled
+          control={<YellowCheckbox checked={state.checkedY} name="checkedY" />}
         />
-        <FormControlLabel
-          control={<BlueCheckbox checked={state.checkedB} onChange={handleChange} name="checkedB" />}
-          l
+        <TextField id="standard-required" label="Name" defaultValue={configYValue} onChange={handleConfigYValueChange}/>
+        <FormControlLabel disabled
+          control={<BlueCheckbox checked={state.checkedB} name="checkedB" />}
         />
+        <TextField id="standard-required" label="Name" defaultValue={configBValue} onChange={handleConfigBValueChange}/>
       </FormGroup>
-      <Button variant="contained" color="primary">
+      <br/><br/>
+      <Button variant="contained" color="primary" onClick={saveDeviceConfig}>
         Save Configuration
       </Button>
     </div>
