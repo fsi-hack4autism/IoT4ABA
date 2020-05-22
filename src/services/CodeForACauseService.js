@@ -1,4 +1,5 @@
 import http from "../http-common";
+import { AzureBlobService } from './AzureBlobService';
 
 class CodeForACauseService {
 
@@ -20,7 +21,13 @@ class CodeForACauseService {
 
     saveDeviceConfig(data) {
         console.log(data);
-        return http.post('/devices/${data.DeviceId}', data);
+        var fileName = data.DeviceId + '_' + new Date().getTime() + '.json';
+        var file = new File([data], fileName , {type: 'application/json'});
+        var azureBlobService = new AzureBlobService();
+        azureBlobService.uploadToBlobStorage(file, {
+            filename: fileName
+          });
+        return 'success';
     }
 
     getTherapistSessions(id) {

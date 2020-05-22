@@ -122,13 +122,7 @@ function Device() {
         'RED' : configRValue
       }
     };
-    CodeForACauseService.saveDeviceConfig(data)
-    .then(response => {
-      console.log(response.data);
-    })
-    .catch(e => {
-      console.log(e);
-    });
+    CodeForACauseService.saveDeviceConfig(data);
   };
 
   deviceType = 'logicAppSimulator';
