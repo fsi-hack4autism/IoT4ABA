@@ -1,3 +1,19 @@
+# Autism Hackathon IoT for ABA Use Case
+
+Despite the proliferation of mobile devices and technologies data collection continues to remain a significant challenge for the effective practice of Applied Behavior Analysis. Tablet/phone-based systems are overly complex and require too much attention during therapy sessions, impacting the delivery of services and quality of data collection. Dynamic programs require adaptations to data collection which are not supported by these systems. In the end teams frequently resort back to pen, paper, and mechanical devices such as hand tally counters.  
+• Can we take a different approach to this problem using an IoT pattern? 
+• Can we find a way to simplify data collection using simple mechanisms and use the cloud to store the data and classify it after the fact using modern tools and technologies?  
+ 
+This use case will prove out the path to a viable solution by building a demo/prototype on how data collection might work using IoT technologies and Raspberry Pi type devices.
+
+# Next Steps
+The use case for the Microsoft Financial Services Autism Hackathon was to build a demo to demostrate how IoT could assist in data collection during a therepy session. As a community project, the focus will be on developing the platform/framework for an IoT system which could be deployed by partners in the space (example: CentralReach), so that new devices could be added easily and plugged into the system.
+
+
+
+
+# Project Details:
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
